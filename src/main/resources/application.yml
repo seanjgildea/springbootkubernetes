@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/treadstone?autoReconnect=true
+    username: root
+    password: password
+
+some:
+  value: default template value
+
+server:
+  port: 8043
+
+springfox:
+  documentation:
+    auto-startup: true
+
+swagger:
+  title: Spring Boot for Kubernetes Demo
+  description: Containerized microservice for Docker/Kubernetes
+  version: 1.0
+  termsOfServiceUrl:
+  license:
+  licenseUrl:
+  contact:
+    name: Sean Gildea
+    email: sgildea@github.com
+    url: http://example.com
