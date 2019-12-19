@@ -1,6 +1,6 @@
 # Spring Boot Kubernetes
 
-Spring Boot demo app that contains a simple RESTful API, Swagger 2 doc, a MySQL db , Actuator he
+Spring Boot demo app that contains a simple RESTful API, Swagger 2 doc, a MySQL db , Actuator, AP4k for K8s, Docker and Docker Compose
 
 ### Tech
 
