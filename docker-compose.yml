@@ -1,10 +1,22 @@
 version: '3.7'
 
 services:
-  java:
+
+  mysqldb:
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=treadstone
+      - MYSQL_PASSWORD=password
+    volumes:
+      - my-db:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d/
+    networks:
+      - treadstone-mysql
+
+  microservice:
     build: .
-    depends_on:
-      - mysqldb
     ports:
       - 8043:8080
     environment:
@@ -17,21 +29,32 @@ services:
       - SPRING_DATASOURCE_PASSWORD=password
     networks:
       - treadstone-mysql
-
-  mysqldb:
-    image: mysql:5.7
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=treadstone
-      - MYSQL_PASSWORD=password
     volumes:
-      - my-db:/var/lib/mysql
-    networks:
-      - treadstone-mysql
+      - microservice-logs:/opt/com/treadstone_system/logs
+
+
 
 volumes:
   my-db:
+  microservice-logs:
 
 networks:
   treadstone-mysql:
+
+
+    version: '3.7'
+
+    services:
+      postgresql:
+        image: postgres
+        restart: always
+        volumes:
+          - postgres-data:/var/lib/postgresql/data
+          - ./db:/docker-entrypoint-initdb.d/
+        ports:
+          - 5432:5432
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+          - POSTGRES_DB=tourism_pass_mgmt
+
