@@ -43,4 +43,8 @@ Tech used in this project
 
 ``` http://localhost:8043/swagger-ui.html#/ ```
 
+### To publish the build to Docker Hub
+
+``` docker-compose bundle --push-images ```
+
 

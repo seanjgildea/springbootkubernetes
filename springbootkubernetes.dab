@@ -1,0 +1,43 @@
+{
+  "Services": {
+    "microservice": {
+      "Env": [
+        "DATABASE_USER=root",
+        "DATABASE_PASSWORD=password",
+        "DATABASE_NAME=treadstone",
+        "some.value=This is Sparta!!!",
+        "SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb/treadstone?autoReconnect=true",
+        "SPRING_DATASOURCE_USERNAME=root",
+        "SPRING_DATASOURCE_PASSWORD=password"
+      ],
+      "Image": "seanjgildea/springbootkubernetes@sha256:cf3692e4e70a1c7084de85aa3c1968e38b2067b5ac3577a557b22006859c52b8",
+      "Networks": [
+        "treadstone-mysql"
+      ],
+      "Ports": [
+        {
+          "Port": 8080,
+          "Protocol": "tcp"
+        }
+      ]
+    },
+    "mysqldb": {
+      "Args": [
+        "--init-file",
+        "/data/application/init.sql"
+      ],
+      "Env": [
+        "MYSQL_ROOT_USER=root",
+        "MYSQL_ROOT_PASSWORD=password",
+        "MYSQL_DATABASE=treadstone",
+        "MYSQL_USER=root",
+        "MYSQL_PASSWORD=password"
+      ],
+      "Image": "mysql@sha256:5779c71a4730da36f013a23a437b5831198e68e634575f487d37a0639470e3a8",
+      "Networks": [
+        "treadstone-mysql"
+      ]
+    }
+  },
+  "Version": "0.1"
+}

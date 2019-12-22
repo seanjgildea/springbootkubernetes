@@ -6,7 +6,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: adoptopenjdk/maven-openjdk8:latest
+      - image: seanjgildea/springbootkubernetes
 
     working_directory: ~/tmp
 
