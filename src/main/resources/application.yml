@@ -3,6 +3,7 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/treadstone
     username: root
+    password: password
     initialization-mode: always # needed to load data.sql
   jpa:
     hibernate.ddl-auto: update
