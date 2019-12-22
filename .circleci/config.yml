@@ -7,29 +7,39 @@ jobs:
   build:
     docker:
       - image: seanjgildea/springbootkubernetes
+      - image: circleci/mysql:5.7-ram
+          environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: treadstone
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
 
     working_directory: ~/tmp
 
     environment:
-
       MAVEN_OPTS: -Xmx3200m
 
     steps:
       - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "pom.xml" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+      - run:
+          # Our primary container isn't MYSQL so run a sleep command until it's ready.
+          name: Waiting for MySQL to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z 127.0.0.1 3306 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for MySQL && exit 1
+      - run:
+          name: Install MySQL CLI; Import dummy data; run an example query
+          command: |
+            sudo apt-get install default-mysql-client
+            mysql -h 127.0.0.1 -u user -ppassw0rd treadstone < db/init.sql
+            mysql -h 127.0.0.1 -u user -ppassw0rd --execute="SELECT * FROM treadstone.movie"
 
       - run: mvn dependency:go-offline
-
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
 
       # run tests!
       - run: mvn integration-test

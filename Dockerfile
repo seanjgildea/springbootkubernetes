@@ -1,5 +1,5 @@
 
-FROM openjdk:8-jdk-alpine
+FROM maven:3.6.3-ibmjava-8-alpine
 
 
 VOLUME /tmp
