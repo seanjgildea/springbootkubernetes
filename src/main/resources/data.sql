@@ -1,1 +1,2 @@
-INSERT INTO movies (name, description, releaseDate) VALUES ('Terminator', 'Sarah Connor is pursued by a Terminator from the future', new Date());
+INSERT IGNORE INTO movie (id, name, description, release_date) VALUES (1, 'Terminator', 'Sarah Connor is pursued by a Terminator from the future', '1984-04-12');
+INSERT IGNORE INTO movie (id, name, description, release_date) VALUES (2, 'Predator', 'An alien stalks an elite military outfit one by one', '1989-12-09');
