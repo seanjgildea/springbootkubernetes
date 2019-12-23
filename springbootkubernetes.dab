@@ -10,7 +10,7 @@
         "SPRING_DATASOURCE_USERNAME=root",
         "SPRING_DATASOURCE_PASSWORD=password"
       ],
-      "Image": "seanjgildea/springbootkubernetes@sha256:c8bdaac6aa87f49d060130561399c9a48acb659f97bdac84bac37ee1fd60d62b",
+      "Image": "seanjgildea/springbootkubernetes@sha256:338c39363f3ad5b82fc0a37bdd82f52057f7a91d1e1080e8d535ca5c6b8172cc",
       "Networks": [
         "treadstone-mysql"
       ],
