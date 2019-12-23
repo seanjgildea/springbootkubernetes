@@ -1,6 +1,6 @@
 # Spring Boot Docker
 
-Spring Boot demo app that contains a simple RESTful API, Swagger 2 doc, a MySQL db , Actuator, AP4k for K8s, Docker and Docker Compose
+Spring Boot Movies App that contains a test endpoint, Swagger 2, MySQL, Docker, Docker Compose, a basic Integration test and some init data. Uses Docker Hub as the Registry for CircleCI.
 
 ### Tech
 
@@ -15,6 +15,7 @@ Tech used in this project
 - Docker
 - Lombok
 - JPA
+- JUnit
 
 ### Building / Running the App
 
