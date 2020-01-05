@@ -24,7 +24,7 @@ Tech used in this project
 ```./mvnw package && java -jar target/treadstone-1.0.jar```
 
 - Test the application after this command succeeds
-- [http://localhost:8089/swagger-ui.html#/movie-controller/getAllMoviesUsingGET](http://localhost:8089/swagger-ui.html#/movie-controller/getAllMoviesUsingGET){:target="_blank"}
+- [http://localhost:8089/swagger-ui.html#/movie-controller/getAllMoviesUsingGET](http://localhost:8089/swagger-ui.html#/movie-controller/getAllMoviesUsingGET){target="_blank"}
 
 ### Prerequisites
 
