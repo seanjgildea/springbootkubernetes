@@ -19,9 +19,11 @@ Tech used in this project
 
 ### Building / Running the App
 
-- Execute the following commands to build the project and create the jar
+- Execute the following commands to build the project, create the jar and launch the application
 
 ```./mvnw package && java -jar target/treadstone-1.0.jar```
+
+[Click here to test the application after this command succeeds](http://localhost:8089/swagger-ui.html#/movie-controller/getAllMoviesUsingGET)
 
 ### Prerequisites
 
