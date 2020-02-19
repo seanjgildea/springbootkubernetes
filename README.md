@@ -16,6 +16,8 @@ Tech used in this project
 - Lombok
 - JPA
 - JUnit
+- Helm
+- CircleCI workflows
 
 ### Building / Running the App
 
