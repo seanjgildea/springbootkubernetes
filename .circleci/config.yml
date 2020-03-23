@@ -2,32 +2,65 @@
 #
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
-version: 2.1
-jobs:
-  build:
-    docker:
-      - image: seanjgildea/springbootkubernetes
-      - image: circleci/mysql:5.7-ram
-        environment:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: treadstone
-          MYSQL_USER: user
-          MYSQL_PASSWORD: password
+  version: 2.1
 
-    working_directory: ~/tmp
+# Executors:
+# Defines the underlying technology to run a job. Can be either docker
+# to run your job inside a Docker container with a specified image or
+# machine to run your job inside a full virtual machine. Learn more.
 
-    environment:
-      MAVEN_OPTS: -Xmx3200m
+  executors:
+    my-executor:
+      docker:
+        - image: seanjgildea/springbootkubernetes
+        - image: circleci/mysql:5.7-ram
+          environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: treadstone
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+      working_directory: ~/tmp
 
-    steps:
-      - checkout
-      - run:
-          # Our primary container isn't MYSQL so run a sleep command until it's ready.
-          name: Waiting for MySQL to be ready
-          command: |
-            sleep 5
+  jobs:
+    build:
+      executor: my-executor
+      environment:
+        MAVEN_OPTS: -Xmx3200m
 
-      - run: mvn dependency:go-offline
+      steps:
+        - checkout
+        - run:
+            # Our primary container isn't MYSQL so run a sleep command until it's ready.
+            name: Waiting for MySQL to be ready
+            command: |
+              sleep 5
 
-      # run tests!
-      - run: mvn integration-test
+        - run: mvn dependency:go-offline
+
+        # run tests!
+        - run: mvn integration-test
+
+    release:
+      executor: my-executor
+      steps:
+        - checkout
+        - restore_cache:
+            keys:
+              - v2-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
+              - v2-deps-{{ .Branch }}-
+              - v2-deps-
+        - run:
+            name: Semantic Release
+            command: npx semantic-release
+
+
+
+
+  workflows:
+    version: 2
+    test_and_release:
+      jobs:
+        - build
+        - release:
+            requires:
+              - build
