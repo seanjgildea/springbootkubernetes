@@ -29,12 +29,20 @@
 
       steps:
         - checkout
+        - restore_cache:
+            keys:
+              - v2-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
+              - v2-deps-{{ .Branch }}-
+              - v2-deps-
         - run:
             # Our primary container isn't MYSQL so run a sleep command until it's ready.
             name: Waiting for MySQL to be ready
             command: |
               sleep 5
-
+        - save_cache:
+            key: v2-deps-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            paths:
+              - ~/.cache
         - run: mvn dependency:go-offline
 
         # run tests!
