@@ -58,4 +58,6 @@
     test_and_release:
       jobs:
         - Build SpringBoot
-        - Run JUnit Tests
+        - Run JUnit Tests:
+            requires:
+              - Build SpringBoot
