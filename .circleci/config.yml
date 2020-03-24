@@ -10,20 +10,34 @@
 # machine to run your job inside a full virtual machine. Learn more.
 
   executors:
-    my-executor:
+    mysql-docker:
+      docker:
+        - image: circleci/mysql:5.7-ram
+      working_directory: ~/tmp
+      environment:
+        term: xterm
+        MYSQL_ROOT_PASSWORD: password
+        MYSQL_DATABASE: treadstone
+        MYSQL_USER: user
+        MYSQL_PASSWORD: password
+
+
+    spring-boot-k8s:
       docker:
         - image: seanjgildea/springbootkubernetes
-        - image: circleci/mysql:5.7-ram
-          environment:
-            MYSQL_ROOT_PASSWORD: password
-            MYSQL_DATABASE: treadstone
-            MYSQL_USER: user
-            MYSQL_PASSWORD: password
+          #auth:
+          #  username: $ArtifactoryCiUser
+          #  password: $ArtifactoryCiPassword
       working_directory: ~/tmp
+      environment:
+        term: xterm
 
   jobs:
-    build:
-      executor: my-executor
+    Install MySQL:
+      executor: mysql-docker
+
+    Build SpringBoot:
+      executor: spring-boot-k8s
       environment:
         MAVEN_OPTS: -Xmx3200m
 
@@ -36,8 +50,10 @@
               sleep 5
         - run: mvn dependency:go-offline
 
-    release:
-      executor: my-executor
+
+
+    Run JUnit Tests:
+      executor: spring-boot-k8s
       steps:
         - checkout
         - run:
@@ -45,13 +61,13 @@
             command: mvn integration-test
 
 
-
-
   workflows:
     version: 2
     test_and_release:
       jobs:
-        - build
-        - release:
+        - Build SpringBoot:
             requires:
-              - build
+              - Install MySQL
+        - Run JUnit Tests:
+            requires:
+              - Install MySQL
