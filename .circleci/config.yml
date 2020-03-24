@@ -10,9 +10,13 @@
 # machine to run your job inside a full virtual machine. Learn more.
 
   executors:
-    mysql-docker:
+    mysql-spring-boot:
       docker:
         - image: circleci/mysql:5.7-ram
+        - image: seanjgildea/springbootkubernetes
+            #auth:
+            #  username: $ArtifactoryCiUser
+            #  password: $ArtifactoryCiPassword
       working_directory: ~/tmp
       environment:
         term: xterm
@@ -22,22 +26,10 @@
         MYSQL_PASSWORD: password
 
 
-    spring-boot-k8s:
-      docker:
-        - image: seanjgildea/springbootkubernetes
-          #auth:
-          #  username: $ArtifactoryCiUser
-          #  password: $ArtifactoryCiPassword
-      working_directory: ~/tmp
-      environment:
-        term: xterm
-
   jobs:
-    Install MySQL:
-      executor: mysql-docker
 
     Build SpringBoot:
-      executor: spring-boot-k8s
+      executor: mysql-spring-boot
       environment:
         MAVEN_OPTS: -Xmx3200m
 
@@ -53,7 +45,7 @@
 
 
     Run JUnit Tests:
-      executor: spring-boot-k8s
+      executor: mysql-spring-boot
       steps:
         - checkout
         - run:
@@ -65,6 +57,5 @@
     version: 2
     test_and_release:
       jobs:
-        - Install MySQL
-        - Build SpringBoot:
-        - Run JUnit Tests:
+        - Build SpringBoot
+        - Run JUnit Tests
